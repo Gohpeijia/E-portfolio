@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
+  /* LIGHT MODE VARIABLES */
   :root {
     --bg: #FAF7F2;
     --surface: #F3EAD8;
@@ -24,6 +25,35 @@
     --faint: #B09B8A;
     --sand: #E2D1BC;
   }
+  /* Smooth transitions for theme switching */
+  body, nav, .skill-card, .ach-card, .edu-card {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  /* DARK MODE VARIABLES */
+  [data-theme="dark"] {
+    --bg: #120F0D;
+    --surface: #1C1815;
+    --border: #332B25;
+    --ink: #FAF7F2;
+    --muted: #A89B8D;
+    --faint: #6A5B50;
+    --sand: #2A241F;
+    /* Adjusting light tags so they don't blind the user in dark mode */
+    --terra-light: rgba(196, 98, 45, 0.15);
+    --teal-light: rgba(74, 125, 107, 0.15);
+    --gold-light: rgba(212, 168, 67, 0.15);
+  }
+
+  /* Theme Button Styling */
+  .theme-btn {
+    background: none; border: none; color: var(--ink);
+    cursor: pointer; padding: 5px; margin-left: 20px;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s, color 0.2s;
+  }
+  .theme-btn:hover { transform: scale(1.1); color: var(--terra); }
+  .theme-btn svg { width: 20px; height: 20px; }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.7; }
@@ -310,13 +340,45 @@
     section { padding: 60px 6vw; }
     .hero { padding: 60px 6vw 50px; }
   }
+
+  /* 1. Fix Nav Bar Background in Dark Mode */
+  [data-theme="dark"] nav {
+    background: rgba(18, 15, 13, 0.92); /* Matches dark mode background */
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  /* 2. Remove the Glowing Circle in Dark Mode */
+  [data-theme="dark"] .hero::before {
+    display: none; 
+  }
+
+  /* 3. Fix Contact Section (Stop it from turning white) */
+  .contact-section {
+    background: #2A1F14; /* Hardcode to dark instead of var(--ink) */
+  }
+  [data-theme="dark"] .contact-section {
+    background: var(--surface); /* Keep it dark in dark mode */
+  }
+  [data-theme="dark"] .tag-terra {
+    color: #E68B5E; /* A brighter orange so it pops */
+  }
+  [data-theme="dark"] .tag-teal {
+    color: #72B79D; /* A brighter green */
+  }
+  [data-theme="dark"] .tag-gold {
+    color: #E3C174; /* A brighter yellow */
+  }
+  [data-theme="dark"] .tag-sand {
+    background: rgba(255, 255, 255, 0.1); /* Changes the bright beige to a sleek translucent dark look */
+    color: var(--ink); /* Makes the text light and readable */
+  }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">Pei <span>Jia</span></a>
+  <a href="#" class="nav-logo"> <b><span>Goh</span> <span>Pei</span> <span>Jia</span></a></b>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#skills">Skills</a></li>
@@ -325,6 +387,10 @@
     <li><a href="#projects">Projects</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <button id="theme-toggle" class="theme-btn" aria-label="Toggle Dark Mode">
+    <svg id="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display: none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -334,7 +400,7 @@
     <h1>Goh<br><em>Pei Jia</em></h1>
     <p class="hero-sub">Aspiring software engineer passionate about<br>problem solving & building elegant solutions.</p>
     <div class="hero-ctas">
-      <a href="https://canva.link/h31v5njpulng221">View Resume</a>
+      <a href="https://canva.link/h31v5njpulng221" class="btn-outline">View Resume</a>
       <a href="#projects" class="btn-primary">View Projects</a>
       <a href="#contact" class="btn-outline">Get in Touch</a>
     </div>
@@ -373,10 +439,10 @@
 
 <!-- ABOUT -->
 <section id="about">
-  <div class="about-grid">
+  <div class="about-grid reveal">
     <div class="about-text">
       <div class="section-eyebrow">About me</div>
-      <h2 class="section-title">Curious mind,<br>clean code.</h2>
+      <h2 class="section-title reveal">Curious mind,<br>clean code.</h2>
       <p>Hi! I'm <strong>Pei Jia</strong>, a Computer Science student at Sunway University with a strong foundation in programming, problem solving, and software development.</p>
       <p>I enjoy participating in hackathons and coding competitions — from KitaHack powered by Google Developer Group to CodeNection at MMU. I believe in learning by doing and pushing myself beyond the classroom.</p>
       <p>Beyond tech, I've been recognised in writing competitions, earning a <strong>Bronze Award</strong> in The Queen's Commonwealth Essay Competition 2023 — a testament to my belief that great engineers communicate just as well as they code.</p>
@@ -417,15 +483,15 @@
 <!-- SKILLS -->
 <section id="skills" class="skills-section">
   <div class="section-eyebrow">What I work with</div>
-  <h2 class="section-title">Skills & technologies</h2>
-  <div class="skills-grid">
+  <h2 class="section-title reveal">Skills & technologies</h2>
+  <div class="skills-grid reveal">
     <div class="skill-card">
       <div class="skill-icon" style="background:var(--terra-light);">🐍</div>
       <h4>Python</h4>
       <p>HackerRank certified · scripting, algorithms & data manipulation</p>
       <div class="skill-tags">
         <span class="tag tag-terra">Certified</span>
-        <span class="tag tag-sand">HackerRank</span>
+        <span class="tag tag-blue">HackerRank</span>
       </div>
     </div>
     <div class="skill-card">
@@ -434,7 +500,7 @@
       <p>Intermediate-level certified in algorithmic thinking & data structures</p>
       <div class="skill-tags">
         <span class="tag tag-teal">Intermediate</span>
-        <span class="tag tag-sand">HackerRank</span>
+        <span class="tag tag-blue">HackerRank</span>
       </div>
     </div>
     <div class="skill-card">
@@ -443,7 +509,7 @@
       <p>Building structured, maintainable solutions with clean design principles</p>
       <div class="skill-tags">
         <span class="tag tag-gold">CS Core</span>
-        <span class="tag tag-sand">Algorithms</span>
+        <span class="tag tag-blue">Algorithms</span>
       </div>
     </div>
     <div class="skill-card">
@@ -452,7 +518,7 @@
       <p>Award-winning writer · clear documentation & stakeholder communication</p>
       <div class="skill-tags">
         <span class="tag tag-sand">Essay Writing</span>
-        <span class="tag tag-sand">Bronze Award</span>
+        <span class="tag tag-blue">Bronze Award</span>
       </div>
     </div>
   </div>
@@ -463,8 +529,8 @@
 <!-- Certificates and Licenses -->
 <section id="certifications">
   <div class="section-eyebrow">Recognition & certifications</div>
-  <h2 class="section-title">Certificates and Licenses</h2>
-  <div class="ach-grid">
+  <h2 class="section-title reveal">Certificates and Licenses</h2>
+  <div class="ach-grid reveal">
 
     <div class="ach-card accent-teal">
       <div class="ach-org">HackerRank</div>
@@ -539,8 +605,8 @@
 
 <!-- ACHIEVEMENTS -->
 <section id="awards">
-  <h2 class="section-title">Awards</h2>
-  <div class="ach-grid">
+  <h2 class="section-title reveal">Awards</h2>
+  <div class="ach-grid" reveal>
 
     <div class="ach-card accent-terra">
       <div class="ach-org">Monash Coding League (MCL) 2026 </div>
@@ -610,8 +676,8 @@
 <!-- PROJECTS -->
 <section id="projects">
 <div class="section-eyebrow">What I've built</div>
-<h2 class="section-title">Projects & Hackathons</h2>
-<div class="ach-grid">
+<h2 class="section-title reveal">Projects & Hackathons</h2>
+<div class="ach-grid" reveal>
 
     <div class="ach-card accent-teal">
       <div class="ach-org">Varsity Hackathon 2026</div>
@@ -688,7 +754,7 @@
 <!-- CONTACT -->
 <section id="contact" class="contact-section">
   <div class="section-eyebrow">Let's connect</div>
-  <h2 class="section-title">Get in touch</h2>
+  <h2 class="section-title reveal">Get in touch</h2>
   <p class="contact-sub">Whether you have a project idea, an opportunity, or just want to say hi — my inbox is open.</p>
   <div class="contact-links">
     <a href="mailto:peijia0307@gmail.com" class="contact-link">
@@ -719,6 +785,54 @@
   Designed & built with care · Goh Pei Jia &copy; 2026 ·
   <a href="mailto:peijia0307@gmail.com">peijia0307@gmail.com</a>
 </footer>
+
+<script>
+  // --- 1. DARK MODE TOGGLE ---
+  const themeToggle = document.getElementById('theme-toggle');
+  const moonIcon = document.getElementById('moon-icon');
+  const sunIcon = document.getElementById('sun-icon');
+  
+  // Check local storage for saved theme, default to light
+  const currentTheme = localStorage.getItem('theme') || 'light';
+  if (currentTheme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    moonIcon.style.display = 'none';
+    sunIcon.style.display = 'block';
+  }
+
+  themeToggle.addEventListener('click', () => {
+    let theme = document.documentElement.getAttribute('data-theme');
+    if (theme === 'dark') {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('theme', 'light');
+      moonIcon.style.display = 'block';
+      sunIcon.style.display = 'none';
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+      moonIcon.style.display = 'none';
+      sunIcon.style.display = 'block';
+    }
+  });
+
+  // --- 2. SCROLL REVEAL ANIMATION ---
+  function reveal() {
+    var reveals = document.querySelectorAll(".reveal");
+    for (var i = 0; i < reveals.length; i++) {
+      var windowHeight = window.innerHeight;
+      var elementTop = reveals[i].getBoundingClientRect().top;
+      var elementVisible = 100; // how many pixels until the element is revealed
+
+      if (elementTop < windowHeight - elementVisible) {
+        reveals[i].classList.add("active");
+      }
+    }
+  }
+
+  // Trigger once on load, and then every time the user scrolls
+  window.addEventListener("scroll", reveal);
+  reveal(); 
+</script>
 
 </body>
 </html>
